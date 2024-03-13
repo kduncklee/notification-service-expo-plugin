@@ -5,7 +5,7 @@
   /**
    * (required) Used to configure APNs environment entitlement. "development" or "production"
    */
-  mode: Mode;
+  mode?: Mode;
 
   /**
    * (optional) Used to configure Apple Team ID. You can find your Apple Team ID by running expo credentials:manager e.g: "91SW8A37CR"

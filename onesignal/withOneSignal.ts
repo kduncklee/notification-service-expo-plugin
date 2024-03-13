@@ -20,7 +20,7 @@ const withOneSignal: ConfigPlugin<OneSignalPluginProps> = (config, props) => {
   validatePluginProps(props);
 
   config = withOneSignalIos(config, props);
-  config = withOneSignalAndroid(config, props);
+  //config = withOneSignalAndroid(config, props);
 
   return config;
 };

@@ -69,6 +69,9 @@ const withRemoteNotificationsPermissions: ConfigPlugin<OneSignalPluginProps> = (
       }
     }
 
+    // Needed for react-native-mmkv.
+    newConfig.modResults['AppGroup'] = `group.${newConfig?.ios?.bundleIdentifier || ""}.shared`;
+
     return newConfig;
   });
 };
@@ -86,7 +89,7 @@ const withAppGroupPermissions: ConfigPlugin<OneSignalPluginProps> = (
       newConfig.modResults[APP_GROUP_KEY] = [];
     }
     const modResultsArray = (newConfig.modResults[APP_GROUP_KEY] as Array<any>);
-    const entitlement = `group.${newConfig?.ios?.bundleIdentifier || ""}.onesignal`;
+    const entitlement = `group.${newConfig?.ios?.bundleIdentifier || ""}.shared`;
     if (modResultsArray.indexOf(entitlement) !== -1) {
       return newConfig;
     }
@@ -117,7 +120,7 @@ const withOneSignalPodfile: ConfigPlugin<OneSignalPluginProps> = (config) => {
 
 const withOneSignalNSE: ConfigPlugin<OneSignalPluginProps> = (config, props) => {
   // support for monorepos where node_modules can be above the project directory.
-  const pluginDir = require.resolve("onesignal-expo-plugin/package.json")
+  const pluginDir = require.resolve("notification-service-expo-plugin/package.json")
   const sourceDir = path.join(pluginDir, "../build/support/serviceExtensionFiles/")
 
   return withDangerousMod(config, [
@@ -141,7 +144,7 @@ const withOneSignalNSE: ConfigPlugin<OneSignalPluginProps> = (config, props) => 
 
       /* MODIFY COPIED EXTENSION FILES */
       const nseUpdater = new NseUpdaterManager(iosPath);
-      await nseUpdater.updateNSEEntitlements(`group.${config.ios?.bundleIdentifier}.onesignal`)
+      await nseUpdater.updateNSEEntitlements(`group.${config.ios?.bundleIdentifier}.shared`)
       await nseUpdater.updateNSEBundleVersion(config.ios?.buildNumber ?? DEFAULT_BUNDLE_VERSION);
       await nseUpdater.updateNSEBundleShortVersion(config?.version ?? DEFAULT_BUNDLE_SHORT_VERSION);
 
@@ -224,7 +227,7 @@ const withOneSignalXcodeProject: ConfigPlugin<OneSignalPluginProps> = (config, p
 }
 
 export const withOneSignalIos: ConfigPlugin<OneSignalPluginProps> = (config, props) => {
-  config = withAppEnvironment(config, props);
+  //config = withAppEnvironment(config, props);
   config = withRemoteNotificationsPermissions(config, props);
   config = withAppGroupPermissions(config, props);
   config = withOneSignalPodfile(config, props)

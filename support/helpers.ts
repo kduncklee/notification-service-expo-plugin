@@ -2,7 +2,7 @@ import { ONESIGNAL_PLUGIN_PROPS } from "../types/types";
 
 export function validatePluginProps(props: any): void {
   // check the type of each property
-  if (typeof props.mode !== "string") {
+  if (props.mode && typeof props.mode !== "string") {
     throw new Error("OneSignal Expo Plugin: 'mode' must be a string.");
   }
 
