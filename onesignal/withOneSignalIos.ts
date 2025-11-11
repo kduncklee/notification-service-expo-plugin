@@ -70,7 +70,9 @@ const withRemoteNotificationsPermissions: ConfigPlugin<OneSignalPluginProps> = (
     }
 
     // Needed for react-native-mmkv.
-    newConfig.modResults['AppGroup'] = `group.${newConfig?.ios?.bundleIdentifier || ""}.shared`;
+    const groupName = `group.${newConfig?.ios?.bundleIdentifier || ""}.shared`;
+    newConfig.modResults['AppGroup'] = groupName;
+    newConfig.modResults['AppGroupIdentifier'] = groupName;
 
     return newConfig;
   });
